@@ -1,0 +1,9 @@
+<ns1:ServiceRequest xmlns:ns1="http://example.com/ns1" xmlns:ns2="http://example.com/ns2">
+    <ns1:Header>
+        <ns2:messageID>12345</ns2:messageID>
+    </ns1:Header>
+    <ns1:Body>
+        <ns1:serviceID>ABC-001</ns1:serviceID>
+        <ns2:customerName>John Doe</ns2:customerName>
+    </ns1:Body>
+</ns1:ServiceRequest>

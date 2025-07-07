@@ -1,0 +1,3 @@
+<ns2:CallbackResponse xmlns:ns2="http://example.com/ns2">
+    <ns2:result>Success</ns2:result>
+</ns2:CallbackResponse>

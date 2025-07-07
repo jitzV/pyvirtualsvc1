@@ -1,0 +1,4 @@
+<ns2:CallbackRequest xmlns:ns2="http://example.com/ns2">
+    <ns2:serviceID>ABC-001</ns2:serviceID>
+    <ns2:status>Processed</ns2:status>
+</ns2:CallbackRequest>

@@ -1,0 +1,63 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ord="http://example.com/order"
+                  xmlns:cus="http://example.com/customer"
+                  xmlns:itm="http://example.com/item"
+                  xmlns:pay="http://example.com/payment">
+   <soapenv:Header>
+      <ord:AuthHeader>
+         <ord:Token>ABC123XYZ</ord:Token>
+         <ord:RequestID>REQ-7890</ord:RequestID>
+      </ord:AuthHeader>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ord:PlaceOrderRequest>
+         <cus:CustomerInfo customerType="premium">
+            <cus:CustomerID>1001</cus:CustomerID>
+            <cus:Name>
+               <cus:FirstName>Jane</cus:FirstName>
+               <cus:LastName>Doe</cus:LastName>
+            </cus:Name>
+            <cus:ContactDetails>
+               <cus:Email>jane.doe@example.com</cus:Email>
+               <cus:Phone>+1234567890</cus:Phone>
+            </cus:ContactDetails>
+            <cus:Addresses>
+               <cus:Address type="billing">
+                  <cus:Street>123 Main St</cus:Street>
+                  <cus:City>Metropolis</cus:City>
+                  <cus:Zip>12345</cus:Zip>
+                  <cus:Country>USA</cus:Country>
+               </cus:Address>
+               <cus:Address type="shipping">
+                  <cus:Street>456 Side Ave</cus:Street>
+                  <cus:City>Gotham</cus:City>
+                  <cus:Zip>54321</cus:Zip>
+                  <cus:Country>USA</cus:Country>
+               </cus:Address>
+            </cus:Addresses>
+         </cus:CustomerInfo>
+         <ord:OrderDetails>
+            <ord:OrderDate>2025-06-14</ord:OrderDate>
+            <ord:Notes priority="high">Deliver between 9am-5pm</ord:Notes>
+            <itm:Items>
+               <itm:Item sku="A100" quantity="2">
+                  <itm:Name>Widget</itm:Name>
+                  <itm:Price currency="USD">19.99</itm:Price>
+               </itm:Item>
+               <itm:Item sku="B200" quantity="1">
+                  <itm:Name>Gadget</itm:Name>
+                  <itm:Price currency="USD">99.95</itm:Price>
+                  <itm:Discount>10.00</itm:Discount>
+               </itm:Item>
+            </itm:Items>
+         </ord:OrderDetails>
+         <pay:PaymentInfo>
+            <pay:Method>CreditCard</pay:Method>
+            <pay:CardNumber>4111111111111111</pay:CardNumber>
+            <pay:Expiry>12/27</pay:Expiry>
+            <pay:CardHolder>Jane Doe</pay:CardHolder>
+            <pay:BillingAddressRef>billing</pay:BillingAddressRef>
+         </pay:PaymentInfo>
+      </ord:PlaceOrderRequest>
+   </soapenv:Body>
+</soapenv:Envelope>

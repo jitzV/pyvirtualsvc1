@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Service Console</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .header .info {
+            font-size: 14px;
+            text-align: right;
+        }
+        .header .info p {
+            margin: 0;
+        }
+        .table-container {
+            margin: 20px auto;
+            max-width: 90%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .text-center {
+            text-align: center;
+        }
+        #total-avg-response-time {
+            text-align: right;
+            padding-right: 160px; /* Optional: Add some padding for better spacing */
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Virtual Service Console</h1>
+        <div class="info">
+            <p><strong>Service Load Time:</strong> <span id="service-load-time"></span></p>
+            <p><strong>Hostname:</strong> <span id="hostname"></span></p>
+            <p><strong>IP Address:</strong> <span id="ip-address"></span></p>
+        </div>
+    </header>
+    <main class="container">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Virtual Service Name</th>
+                        <th>Hit Count</th>
+                        <th>Last Access Time</th>
+                        <th>Average Response Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="hit-table">
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Total</th>
+                        <th id="total-hits">0</th>
+                        <th colspan="2" id="total-avg-response-time">0.00 ms</th>
+                        <th>-</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="text-center">
+            <button class="btn-custom" onclick="resetHits()">Reset Counters</button>
+        </div>
+    </main>
+    <script>
+        async function fetchHits() {
+            const response = await fetch('/hits');
+            const data = await response.json();
+            const tableBody = document.getElementById('hit-table');
+            const totalHits = document.getElementById('total-hits');
+            const totalAvgResponseTime = document.getElementById('total-avg-response-time');
+            const serviceLoadTime = document.getElementById('service-load-time');
+            const hostname = document.getElementById('hostname');
+            const ipAddress = document.getElementById('ip-address');
+
+            // Update service load time, hostname, and IP address
+            serviceLoadTime.textContent = data.service_load_time;
+            hostname.textContent = data.hostname;
+            ipAddress.textContent = data.ip_address;
+
+            // Update table
+            tableBody.innerHTML = '';
+            for (const [service, details] of Object.entries(data.services)) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${service}</td>
+                    <td>${details.hits}</td>
+                    <td>${details.last_access_time}</td>
+                    <td>${details.avg_response_time}</td>
+                    <td>${details.status}</td>
+                `;
+                tableBody.appendChild(row);
+            }
+            totalHits.textContent = data.total;
+            totalAvgResponseTime.textContent = data.total_avg_response_time;
+        }
+
+        async function resetHits() {
+            await fetch('/reset', { method: 'POST' });
+            fetchHits();
+        }
+
+        setInterval(fetchHits, 5000); // Refresh every 5 seconds
+        fetchHits();
+    </script>
+</body>
+</html>

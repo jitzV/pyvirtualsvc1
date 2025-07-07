@@ -22,3 +22,15 @@ async def service3_handler(request: Request):
         "responseCode": 200
     })
     return JSONResponse(content=response_data)
+
+# Example GET endpoint
+@router.get("/info")
+async def service3_info():
+    # Example data to return
+    info_data = {
+        "service": "service3",
+        "description": "This is a GET endpoint for service3.",
+        "status": "active",
+        "version": "1.0.0"
+    }
+    return JSONResponse(content=info_data)

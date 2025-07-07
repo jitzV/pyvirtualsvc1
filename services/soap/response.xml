@@ -1,0 +1,42 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ord="http://example.com/order"
+                  xmlns:itm="http://example.com/item"
+                  xmlns:pay="http://example.com/payment">
+   <soapenv:Header>
+      <ord:ResponseHeader>
+         <ord:RequestID>REQ-7890</ord:RequestID>
+         <ord:Timestamp>2025-06-14T12:34:56Z</ord:Timestamp>
+      </ord:ResponseHeader>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ord:PlaceOrderResponse>
+         <ord:OrderID>ORD-20250614-001</ord:OrderID>
+         <ord:Status>Confirmed</ord:Status>
+         <ord:EstimatedDelivery>2025-06-20</ord:EstimatedDelivery>
+         <itm:Items>
+            <itm:Item sku="A100">
+               <itm:Name>Widget</itm:Name>
+               <itm:Quantity>2</itm:Quantity>
+               <itm:UnitPrice currency="USD">19.99</itm:UnitPrice>
+               <itm:TotalPrice currency="USD">39.98</itm:TotalPrice>
+            </itm:Item>
+            <itm:Item sku="B200">
+               <itm:Name>Gadget</itm:Name>
+               <itm:Quantity>1</itm:Quantity>
+               <itm:UnitPrice currency="USD">99.95</itm:UnitPrice>
+               <itm:Discount>10.00</itm:Discount>
+               <itm:TotalPrice currency="USD">89.95</itm:TotalPrice>
+            </itm:Item>
+         </itm:Items>
+         <pay:PaymentStatus>
+            <pay:Method>CreditCard</pay:Method>
+            <pay:Status>Approved</pay:Status>
+            <pay:TransactionID>TXN-555888</pay:TransactionID>
+         </pay:PaymentStatus>
+         <ord:Messages>
+            <ord:Message type="info">Order placed successfully.</ord:Message>
+            <ord:Message type="warning">Delivery may be delayed due to weather.</ord:Message>
+         </ord:Messages>
+      </ord:PlaceOrderResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
